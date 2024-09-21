@@ -11,12 +11,348 @@
       <title>Project</title>
 
       <link rel="stylesheet" href="./css/app.css">
-
+      <style>
+    
+         .info-popup{
+             display: none;
+         }
+         .add-popup{
+             display: none;
+         }
+     
+        
+     
+     </style>
+ 
    </head>
 
    <body itemscope itemtype="http://schema.org/WebPage">
 
       <script type="text/javascript" src="../build/app.js"></script>
-      
+      <div class="add-popup">
+         <div class="header">
+         <label> Add teacher</label>
+         <img src="close.png" alt="Close" class="close-add">
+         </div>
+        
+     <section class="section-grid">
+     <div class="name-add">
+     <label>Name</label>
+     <input type="text" placeholder="Enter name" required>
+     </div>
+     <div class="speciality-add">
+         <label>Speciality</label>
+         <select required> 
+             <option value="1"> Mathematics </option>
+             <option value="2"> Chemistry </option>
+             <option value="1"> IT </option>
+         </select>
+         </div>
+         <div class="country-add">
+             <label>Country</label>
+             <select required> 
+                 <option value="1"> Ukraine </option>
+                 <option value="2"> Not Ukraine </option>
+             </select>
+             </div>
+      <div class="city-add">
+                 <label>City</label>
+                 <input type="text" required>
+                 </div>
+     <div class="email-add">
+                     <label>Email</label>
+                     <input type="email" required>
+                     </div>
+     <div class="phone-add">
+                         <label>Pnone</label>
+                         <input type="number" required>
+                         </div>
+     <div class="birth-add">
+                             <label>Date of birth</label>
+                             <input type="date" required>
+                             </div>
+ 
+     <div class="sex-add">
+         <label>Sex</label>
+         <div class="option">
+         <label for="male">Male</label>
+         <input type="radio" id="male" name="sex" required>
+         <label for="age3">Female</label>
+         <input type="radio" id="female" name="sex">
+     </div>
+     </div>
+     <div class="color-add">
+         <label>Background color</label>
+         <input type="color" required>
+         </div>
+         <div class="notes-add">
+             <label> Notes (optional) </label>
+             <textarea></textarea>
+             </div>
+     </section>
+     <input type="submit" value="Add" class="add-teacher">
+     </div>
+ 
+     <div class="info-popup">
+         <div class="header">
+             <label> Add teacher</label>
+             <img src="close.png" alt="Close" class="close-add">
+             </div>
+         <div class="required-info">
+         <img class="photo-info" src="teacher.jpg">
+         <div class="main-info"> 
+             <label class="name-info"> Ihor Tkachuk</label>
+             <label class="subject-info">Chemistry</label>
+             <label class="place-info">Kyiv, Ukraine</label>
+             <label class="bio-info">35, Male</label>
+             <a class="email-info" href="https://mail.google.com/mail/u/0/">ukma@edu.ua</a>
+             <label class="number-info">+380976542</label>
+         </div>
+     </div>
+     <p>I have a passion for making complex scientific concepts easy to understand and exciting for students. With a focus on hands-on experiments and real-life applications, I strive to create a classroom environment that fosters curiosity and critical thinking. When I'm not teaching, I enjoy exploring new educational tools and methods to keep my lessons engaging and up-to-date </p>
+     <a class="toggle-map" href="https://www.google.com.ua/maps/">toggle map</a>
+ </div>
+     
+     
+     
+     <div class="site">
+     <header>
+         <button class="plus-button"> <img src="add.png" class="plus"> </button>
+             <h1 class="logo">Teachinder</h1>
+             <div class="search-bar">
+             <input class="search-line" type="text" class="search-bar" placeholder="Name, note or age to search">
+              <button class="search-button">Search</button>
+             </div>
+     </header>
+     <nav> 
+             <ul class="navbar">
+                 <li><a href="#top-teachers">Teachers</a></li>
+                 <li><a href="#statistics">Statistics</a></li>
+                 <li><a href="#favorites">Favorites</a></li>
+                 <li><a href="#about">About</a></li>
+             </ul>
+            <button class="add-teacher-nav">Add teacher</button>
+         </nav>
+     <section id="top-teachers">
+         <h2>Top Teachers</h2>
+         <div class="filters">
+             <label class="age-filter"> Age 
+             <select> 
+                 <option value="1"> 18-31 </option>
+                 <option value="2"> 32-45 </option>
+                 <option value="1"> 45-60 </option>
+             </select>
+             </label>
+             <label class="region-filter"> Region
+                 <select> 
+                     <option value="1"> Europe </option>
+                     <option value="2"> America </option>
+                     <option value="1"> Africa </option>
+                 </select>
+            </label>
+             <label class="sex-filter"> Age
+                     <select> 
+                         <option value="1"> Male </option>
+                         <option value="2"> Female </option>
+                     </select>
+                 </label>
+             <label class="photo-filter">
+                     <input type="checkbox">
+                     Only with photo
+                   </label>
+             <label class="favourites-filter">
+                     <input type="checkbox">
+                     Only favourites
+                   </label>
+         </div>
+         <div class="top-teachers">
+         <div class="top-card">
+             <img src="favorite.png" alt="Ribbon" class="ribbon">
+             <img src="teacher.jpg" alt="Profile Image" class="profile-img">
+             <div class="name">Ihor Tkachuk</div>
+             <div class="subject">Chemistry</div>
+             <div class="location">Ukraine</div>
+         </div>
+         <div class="top-card">
+             <img src="teacher.jpg" alt="Profile Image" class="profile-img">
+             <div class="name">Ihor Tkachuk</div>
+             <div class="subject">Chemistry</div>
+             <div class="location">Ukraine</div>
+         </div>
+         <div class="top-card">
+             <img src="favorite.png" alt="Ribbon" class="ribbon">
+             <img src="teacher.jpg" alt="Profile Image" class="profile-img">
+             <div class="name">Ihor Tkachuk</div>
+             <div class="subject">Chemistry</div>
+             <div class="location">Ukraine</div>
+         </div>
+         <div class="top-card">
+             <div class="profile-img">I. T.</div>
+             <div class="name">Ihor Tkachuk</div>
+             <div class="subject">Chemistry</div>
+             <div class="location">Ukraine</div>
+         </div>
+         <div class="top-card">
+             <img src="teacher.jpg" alt="Profile Image" class="profile-img">
+             <div class="name">Ihor Tkachuk</div>
+             <div class="subject">Chemistry</div>
+             <div class="location">Ukraine</div>
+         </div>
+     </div>
+     </section>
+     <section id="statistics">
+         <h2> Statistics </h2>
+         <div class="table">
+         <table>
+             <thead>
+                 <tr>
+                     <th>Name</th>
+                     <th>Speciality</th>
+                     <th>Age</th>
+                     <th>Gender</th>
+                     <th>Nationality</th>
+                 </tr>
+             </thead>
+             <tbody>
+                 <tr>
+                     <td>Daisy Alexander</td>
+                     <td>Chemistry</td>
+                     <td>28</td>
+                     <td>Female</td>
+                     <td>Vietnam</td>
+                 </tr>
+                 <tr>
+                     <td>Julia Bradley</td>
+                     <td>Math</td>
+                     <td>26</td>
+                     <td>Female</td>
+                     <td>USA</td>
+                 </tr>
+                 <tr>
+                     <td>Rita Hart</td>
+                     <td>Art</td>
+                     <td>41</td>
+                     <td>Female</td>
+                     <td>Ireland</td>
+                 </tr>
+                 <tr>
+                     <td>Jonathan Jacobs</td>
+                     <td>Math</td>
+                     <td>32</td>
+                     <td>Male</td>
+                     <td>England</td>
+                 </tr>
+                 <tr>
+                     <td>Nathaniel White</td>
+                     <td>Computer Science</td>
+                     <td>37</td>
+                     <td>Male</td>
+                     <td>Austria</td>
+                 </tr>
+                 <tr>
+                     <td>Frank Medina</td>
+                     <td>English</td>
+                     <td>43</td>
+                     <td>Male</td>
+                     <td>Italy</td>
+                 </tr>
+                 <tr>
+                     <td>Ella Curtis</td>
+                     <td>Chess</td>
+                     <td>34</td>
+                     <td>Female</td>
+                     <td>USA</td>
+                 </tr>
+                 <tr>
+                     <td>Claire Simmmons</td>
+                     <td>Art</td>
+                     <td>38</td>
+                     <td>Female</td>
+                     <td>Netherlands</td>
+                 </tr>
+                 <tr>
+                     <td>Benjamin Knight</td>
+                     <td>Biology</td>
+                     <td>44</td>
+                     <td>Male</td>
+                     <td>Scotland</td>
+                 </tr>
+                 <tr>
+                     <td>Norma Rose</td>
+                     <td>Statistics</td>
+                     <td>36</td>
+                     <td>Female</td>
+                     <td>France</td>
+                 </tr>
+             </tbody>
+         </table>
+         <div class="pagination">
+             <a href="#" class="active">1</a>
+             <a href="#">2</a>
+             <a href="#">3</a>
+             <a href="#">...</a>
+             <a href="#">Last</a>
+         </div>
+     </div>
+     </section>
+     <section id="favorites">
+         <h2> Favorites </h2>
+         <div class="favorit-teachers">
+             <a class="prev">&#10094;</a>
+         <div class="fav-card">
+             <div class="profile-img">I. T.</div>
+             <div class="name">Ihor Tkachuk</div>
+             <div class="location">Ukraine</div>
+         </div>
+         <div class="fav-card">
+             <img src="teacher.jpg" alt="Profile Image" class="profile-img">
+             <div class="name">Ihor Tkachuk</div>
+             <div class="location">Ukraine</div>
+         </div>
+         <div class="fav-card">
+             <img src="teacher.jpg" alt="Profile Image" class="profile-img">
+             <div class="name">Ihor Tkachuk</div>
+             <div class="location">Ukraine</div>
+         </div>
+         <div class="fav-card">
+             <img src="teacher.jpg" alt="Profile Image" class="profile-img">
+             <div class="name">Ihor Tkachuk</div>
+             <div class="location">Ukraine</div>
+         </div>
+         <div class="fav-card">
+             <img src="teacher.jpg" alt="Profile Image" class="profile-img">
+             <div class="name">Ihor Tkachuk</div>
+             <div class="location">Ukraine</div>
+         </div>
+         <a class="next">&#10095;</a>
+     </div>
+     </section>
+     <section id="about">
+         <h2> About </h2>
+         <p class="about__paragraph">
+             Teachinder is an innovative platform designed to connect educators and learners in a way that's reminiscent of Tinder's swipe-based matching system. It allows teachers, tutors, and educational professionals to create profiles showcasing their expertise and teaching styles, while students or parents can search for and connect with educators who best meet their learning needs and wants.  
+             By facilitating these connections through a user-friendly interface, Teachinder aims to streamline the process of finding and engaging with the right educational resources and professionals.
+         </p>
+         <p class="about__paragraph">
+             With over 10,000 qualified teachers and tutors, Teachinder makes it easy to connect with the right educational professionals tailored to your learning goals.Enjoy a user-friendly experience with a 95% satisfaction rate among our users. Our intuitive swipe-based matching system ensures you find educators that fit your needs effortlessly. Connect with the top educators from around the world and access a wealth of knowledge without leaving your home. 
+             With a 90% success rate in matching users with highly rated educators, Teachinder is committed to enhancing the learning journey for students of all ages.
+         </p>
+         <p class="about__paragraph">
+             Join Teachinder today and revolutionize your educational experience!
+             
+         </p>
+     </section>
+ </header>
+ <nav> 
+         <ul class="navbar">
+             <li><a href="#top-teachers">Teachers</a></li>
+             <li><a href="#statistics">Statistics</a></li>
+             <li><a href="#favorites">Favorites</a></li>
+             <li><a href="#about">About</a></li>
+         </ul>
+        <button class="add-teacher-nav">Add teacher</button>
+     </nav>
+ </div>
+ 
   </body>
 </html>
