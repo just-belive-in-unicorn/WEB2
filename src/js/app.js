@@ -1,5 +1,5 @@
-const testModules = require('./test-module');
-require('../css/app.css');
+const testModules = require('./test-module.js');
+// require('../css/app.css');
 
 /** ******** Your code here! *********** */
 
