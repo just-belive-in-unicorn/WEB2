@@ -38,7 +38,7 @@ body{
     background-color: #ffffff;
 }
 
-#filter-button{
+#filter-button, #prev-50, #next-50{
     height: 100%;
     font-weight: 600;
     border-width: 1px;
@@ -50,7 +50,8 @@ body{
     background-color: #ffffff;
 }
 
-#filter-button:hover{
+
+#filter-button:hover, #prev-50:hover, #next-50:hover{
     background-color: #f75c48;
     color: #fff;
 }

@@ -1,0 +1,17 @@
+{
+  "teachers": [
+    {
+      "id": "4049",
+      "full_name": "DERNOVA ANASTASIIA",
+      "gender": "Male",
+      "note": "No additional information available.",
+      "city": "Kiyv",
+      "country": "Ukraine",
+      "age": 35,
+      "phone": "+380968398232",
+      "email": "anastasiyadernova2608@gmail.com",
+      "course": "Mathematics",
+      "favorite": false
+    }
+  ]
+}

@@ -1,10 +1,41 @@
-import { validateUser, sortUsers, searchInArray, filterUsers, transformedUserMock } from '/js/test-module.js';
 
-const users = transformedUserMock; 
+import { validateUser, sortUsers, searchInArray, filterUsers,  transformUsers, transformUsersAdd} from '/js/test-module.js';
+
+let users = [];
+let tableUsers = [];
+let usersNow = [];
 const teachersContainer = document.getElementById('teachers-container');
 const infoPopup = document.getElementById('info-popup');
 const closePopupBtn = document.querySelector('.close-info');
 
+fetch('http://localhost:3001/api/users') 
+    .then(response => response.json())
+    .then(users => {
+        initializeUsers();
+    })
+    .catch(error => console.error('Error fetching users:', error));
+
+    async function fetchUsers() {
+        try {
+          const response = await fetch(`https://randomuser.me/api/?results=50`);
+          const data = await response.json();
+          return data.results;
+        } catch (error) {
+          console.error('Error fetching users:', error);
+          return [];
+        }
+      }
+
+      async function initializeUsers() {
+        let usersZapit = await fetchUsers();
+        let usersPrev = transformUsers(usersZapit);
+        users = transformUsersAdd(usersPrev);
+        usersNow = users;
+        displayTeachers();
+        displayFavorites();
+    }
+    
+      
 
 function populateInfoPopup(teacher) {
     document.getElementById('favorite-icon').src = teacher.favorite ? 'favorite.png' : 'not-favorite.png';
@@ -18,12 +49,14 @@ function populateInfoPopup(teacher) {
     document.getElementById('teacher-phone').textContent = teacher.phone;
     document.getElementById('teacher-note').textContent = teacher.note || 'No additional information available.';
 }
+
 function openInfoPopup(teacher, teacherCard) {
     populateInfoPopup(teacher);
     infoPopup.style.display = 'block';
 
     const favoriteIcon = document.getElementById('favorite-icon');
     favoriteIcon.onclick = () => {
+        displayFavorites();
         teacher.favorite = !teacher.favorite; // Toggle favorite status
         favoriteIcon.src = teacher.favorite ? 'favorite.png' : 'not-favorite.png'; // Update icon
 
@@ -39,19 +72,29 @@ function openInfoPopup(teacher, teacherCard) {
                 teacherCard.removeChild(existingRibbon);
             }
         }
-
-
-        displayTeachers(users);
-        displayFavorites(users);
+        currentFavoritePage=1;
+        displayTeachers();
+        displayFavorites();
     };
 }
 
 
 
 
-function displayTeachers(teachers) {
+let currentPage = 1;
+const usersPerPage = 10;
+
+
+function displayTeachers() {
     teachersContainer.innerHTML = '';
-    teachers.forEach(teacher => {
+
+    const startIndex = (currentPage - 1) * usersPerPage;
+    const endIndex = startIndex + usersPerPage;
+    const teachersToShow = usersNow.slice(startIndex, endIndex);
+    tableUsers = teachersToShow;
+    updateTable();
+
+    teachersToShow.forEach(teacher => {
         const teacherCard = document.createElement('div');
         teacherCard.classList.add('top-card');
         const profileImage = teacher.picture_large 
@@ -74,8 +117,56 @@ function displayTeachers(teachers) {
     });
 
     
-    displayFavorites(teachers);
+    updatePaginationButtons();
 }
+
+function updatePaginationButtons() {
+    const nextButton = document.getElementById('next-50');
+    const prevButton = document.getElementById('prev-50');
+    if (currentPage * usersPerPage >= usersNow.length) {
+        nextButton.disabled = true;
+    } else {
+        nextButton.disabled = false;
+    }
+    if (currentPage === 1) {
+        prevButton.disabled = true;
+    } else {
+        prevButton.disabled = false;
+    }
+}
+
+document.getElementById('next-50').addEventListener('click', () => {
+    if (currentPage * usersPerPage < usersNow.length) {
+        currentPage++;
+        displayTeachers();
+    }
+});
+
+document.getElementById('prev-50').addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        displayTeachers();
+    }
+});
+
+
+
+document.getElementById('next-50').addEventListener('click', () => {
+    if (currentPage * usersPerPage < users.length) { 
+        currentPage++;
+        displayTeachers();
+    }
+});
+
+
+document.getElementById('prev-50').addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        displayTeachers();
+    }
+});
+
+
 
 closePopupBtn.addEventListener('click', () => {
     infoPopup.style.display = 'none';
@@ -99,8 +190,12 @@ filterButton.addEventListener('click', () => {
         favorite: favoritesOnly ? true : undefined
     };
 
+
     const filteredUsers = filterUsers(users, filters);
-    displayTeachers(filteredUsers); 
+    tableUsers = filteredUsers;
+    usersNow = filteredUsers;
+    displayTeachers(); 
+    updateTable();
 });
 
 
@@ -114,9 +209,9 @@ let currentSortOrder = 'asc';
 const teacherTableBody = document.getElementById('teacher-table-body');
 
 
-function updateTable(users) {
+function updateTable() {
   teacherTableBody.innerHTML = '';
-  users.forEach(user => {
+  tableUsers.forEach(user => {
     const row = document.createElement('tr');
     row.innerHTML = `
       <td>${user.full_name}</td>
@@ -141,8 +236,9 @@ function handleSort(event) {
       currentSortOrder = 'asc'; 
     }
     
-    const sortedUsers = sortUsers(users, sortBy, currentSortOrder);
-    updateTable(sortedUsers); 
+    const sortedUsers = sortUsers(tableUsers, sortBy, currentSortOrder);
+    tableUsers = sortedUsers;
+    updateTable(); 
   }
 }
 
@@ -159,29 +255,39 @@ document.querySelectorAll('th[data-sort]').forEach(th => {
 document.getElementById('search-button').addEventListener('click', () => {
     const searchString = document.getElementById('search-input').value;
     const filteredUsers = searchInArray(users, searchString);
-    displayTeachers(filteredUsers);
+tableUsers = filteredUsers;
+usersNow = filteredUsers;
+displayTeachers();
+updateTable();
 });
 
+let currentFavoritePage = 1;
+const favoritesPerPage = 5;
 
-function displayFavorites(teachers) {
+function displayFavorites() {
     const favoritesContainer = document.getElementById('favorites-container');
-    favoritesContainer.innerHTML = ''; // Clear existing favorites
+    favoritesContainer.innerHTML = '';
     
-    const favoriteTeachers = teachers.filter(teacher => teacher.favorite); // Get favorite teachers
+    const favoriteTeachers = users.filter(teacher => teacher.favorite);
 
     if (favoriteTeachers.length === 0) {
         favoritesContainer.innerHTML = '<p>No favorite teachers yet.</p>';
         return;
     }
-    favoriteTeachers.forEach(teacher => {
+
+    const startIndex = (currentFavoritePage - 1) * favoritesPerPage;
+    const endIndex = startIndex + favoritesPerPage;
+    const teachersToShow = favoriteTeachers.slice(startIndex, endIndex);
+
+    teachersToShow.forEach(teacher => {
         const favCard = document.createElement('div');
         favCard.classList.add('fav-card');
         const profileImage = teacher.picture_large 
         ? `<img src="${teacher.picture_large}" alt="Profile Image" class="profile-img">`
         : `<div class="profile-img">${teacher.full_name.charAt(0).toUpperCase()}</div>`;
     
-    favCard.innerHTML = `
-        ${profileImage}
+        favCard.innerHTML = `
+            ${profileImage}
             <div class="name">${teacher.full_name}</div>
             <div class="location">${teacher.city}, ${teacher.country}</div>
         `;
@@ -191,9 +297,27 @@ function displayFavorites(teachers) {
 
         favoritesContainer.appendChild(favCard);
     });
+
+    
+    document.getElementById('next').style.display = 
+        currentFavoritePage * favoritesPerPage >= favoriteTeachers.length ? 'none' : 'block';
+    
+    
+    document.getElementById('prev').style.display = 
+        currentFavoritePage === 1 ? 'none' : 'block';
 }
 
+document.getElementById('next').addEventListener('click', () => {
+    currentFavoritePage++;
+    displayFavorites();
+});
 
+document.getElementById('prev').addEventListener('click', () => {
+    if (currentFavoritePage > 1) {
+        currentFavoritePage--;
+        displayFavorites();
+    }
+});
 
 
 
@@ -201,7 +325,7 @@ document.querySelector('.plus-button').addEventListener('click', openAddTeacherP
 document.querySelector('.add-teacher-nav').addEventListener('click', openAddTeacherPopup);
 
 function gatherAndFormatUserData() {
-    // Get values from the form
+
     const fullName = document.querySelector('.name-add input').value.trim();
     const specialitySelect = document.querySelector('.speciality-add select');
     const speciality = specialitySelect.options[specialitySelect.selectedIndex].text.trim();
@@ -224,38 +348,53 @@ function gatherAndFormatUserData() {
     
     const user = {
         full_name: fullName,
-        gender: sex === 'male' ? 'Male' : 'Female', // Convert to expected format
-        note: note || 'No additional information available.', // Default if empty
+        gender: sex === 'male' ? 'Male' : 'Female',
+        note: note || 'No additional information available.', 
         city: city,
         country: country,
         age: age,
         phone: phone,
         email: email,
-        course: speciality, // Assuming 'speciality' is equivalent to 'course'
-        favorite: false // Assuming new teachers are not favorites by default
+        course: speciality,
+        favorite: false 
     };
 
     return user;
 }
 
 
-document.querySelector('.add-teacher').addEventListener('click', (event) => {
-    event.preventDefault(); // Prevent form submission
+document.querySelector('.add-teacher').addEventListener('click', async (event) => {
+    event.preventDefault(); 
     const userData = gatherAndFormatUserData();
     const validationResults = validateUser(userData);
-    
+
     if (validationResults[0] === 'Об\'єкт валідний!') {
-        users.unshift(userData);
-        displayTeachers(users);
-        
-        alert('Teacher added successfully!');
-        
-        // Close the popup
-        closeAddTeacherPopup();
-        
-        
+        try {
+            
+            const response = await fetch('http://localhost:3002/teachers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData),
+            });
+
+            if (response.ok) {
+                const newTeacher = await response.json();
+                users.unshift(newTeacher); 
+                usersNow = users;
+                displayTeachers();
+                alert('Teacher added successfully!');
+                closeAddTeacherPopup();
+                updateTable();
+            } else {
+                alert('Error adding teacher');
+            }
+        } catch (error) {
+            console.error('Error submitting teacher data:', error);
+            alert('Error submitting teacher data');
+        }
     } else {
-        // If there are errors, inform the user
         alert(validationResults.join('\n'));
     }
 });
@@ -272,5 +411,5 @@ function closeAddTeacherPopup() {
 document.querySelector('.close-add').addEventListener('click', closeAddTeacherPopup);
 
 
-updateTable(users);
-displayTeachers(users);
+
+

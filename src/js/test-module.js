@@ -13,31 +13,43 @@ Law, Art, Medicine, Statistics
 Обєкти можуть мати не однакову кількість полів та різні інтерфейси. Результатом
 виконання, є функція, що повертає масив відформатованних об’єктів. 
 */
-export const transformedUsers = randomUserMock.map(user => {
-  const { gender, name: { title, first, last }, location, email, dob, phone, picture, login } = user;
-  return {
-    gender,
-    title,
-    full_name: `${first} ${last}`,
-    city: location.city,
-    state: location.state,
-    country: location.country,
-    postcode: location.postcode,
-    coordinates: location.coordinates,
-    timezone: location.timezone,
-    email,
-    b_date: dob.date,
-    age: dob.age,
-    phone,
-    picture_large: picture.large,
-    picture_thumbnail: picture.thumbnail,
-    id: login.uuid,
-    favorite: null,
-    course: null,
-    bg_color: null,
-    note: null
-  };
-});
+export const transformUsers = (userArray) => {
+  return userArray.map(user => {
+    const { 
+      gender, 
+      name: { title, first, last }, 
+      location, 
+      email, 
+      dob, 
+      phone, 
+      picture, 
+      login 
+    } = user;
+    
+    return {
+      gender,
+      title,
+      full_name: `${first} ${last}`,
+      city: location.city,
+      state: location.state,
+      country: location.country,
+      postcode: location.postcode,
+      coordinates: location.coordinates,
+      timezone: location.timezone,
+      email,
+      b_date: dob.date,
+      age: dob.age,
+      phone,
+      picture_large: picture.large,
+      picture_thumbnail: picture.thumbnail,
+      id: login.uuid,
+      favorite: null,
+      course: null,
+      bg_color: null,
+      note: null
+    };
+  });
+};
 
 
 const courses = [
@@ -54,20 +66,23 @@ export const getRandomColor = () => {
 const getRandomFavorite = () => Math.random() < 0.5;
 
 
-export const transformedUserMock = transformedUsers.map(user => {
-  const matchingUser = additionalUsers.find(addUser => addUser.full_name === user.full_name);
-  
-  return {
-    ...user,
-    id: matchingUser ? matchingUser.id : null,
-    favorite: matchingUser ? matchingUser.favorite : getRandomFavorite(),
-    course: matchingUser && matchingUser.course ? matchingUser.course : courses[Math.floor(Math.random() * courses.length)],
-    bg_color: matchingUser ? matchingUser.bg_color : getRandomColor(),
-    note: matchingUser ? matchingUser.note : null,
-  };
-});
+export const transformUsersAdd= (userArray) => {
+  return userArray.map(user => {
+    // Find a matching user in the additionalUsers array based on full_name
+    const matchingUser = additionalUsers.find(addUser => addUser.full_name === user.full_name);
+    
+    // Return a new object for each user, spreading existing properties and adding/updating others
+    return {
+      ...user,
+      id: matchingUser ? matchingUser.id : null, // Use ID if a matching user exists; otherwise, null
+      favorite: matchingUser ? matchingUser.favorite : getRandomFavorite(), // Get favorite if exists; otherwise, generate a random one
+      course: matchingUser && matchingUser.course ? matchingUser.course : courses[Math.floor(Math.random() * courses.length)], // Get course if it exists; otherwise, pick a random one from the courses array
+      bg_color: matchingUser ? matchingUser.bg_color : getRandomColor(), // Use existing bg_color if present; otherwise, generate a random color
+      note: matchingUser ? matchingUser.note : null, // Use note if exists; otherwise, null
+    };
+  });
+};
 
-console.log(transformedUserMock);
 
 /*
 
